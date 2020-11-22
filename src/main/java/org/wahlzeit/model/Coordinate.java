@@ -31,7 +31,7 @@ class Coordinate
     private double x;
     private double y;
     private double z;
-    
+
     /**
      * Returns the coordinates as an array of the form
      * {x,y,z}
@@ -100,7 +100,7 @@ class Coordinate
     {
         this.y = y;
     }
-    
+
     /**
      * Returns  the Y coordinate.
      * @methodtype get method
@@ -160,5 +160,14 @@ class Coordinate
             return this.isEqual((Coordinate)other);
         }
         return false;
+    }
+    @Override
+    public int hashCode()
+    {
+
+        int hashX = Double.valueOf(this.x).hashCode();
+        int hashY = Double.valueOf(this.y).hashCode();
+        int hashZ = Double.valueOf(this.z).hashCode();
+        return hashX ^ hashY ^ hashZ;
     }
 }
