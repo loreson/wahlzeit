@@ -32,7 +32,11 @@ CREATE TABLE photos (
 	creation_time bigint,
 	coord_x float,
 	coord_y float,
-	coord_z float
+	coord_z float,
+	edition text,
+	rarity text,
+	condition text
+
 );
 
 CREATE TABLE tags (
