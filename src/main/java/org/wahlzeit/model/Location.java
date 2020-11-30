@@ -4,7 +4,7 @@ class Location
 {
     public Location()
     {
-        coordinate = new Coordinate();
+        coordinate = new CartesianCoordinate();
     }
     public Location(Coordinate coordinate)
     {
@@ -12,7 +12,7 @@ class Location
     }
     public Coordinate getCoordinate()
     {
-        return new Coordinate(this.coordinate);
+        return this.coordinate;
     }
 
     public void setCoordinate(Coordinate coordinate)

@@ -166,7 +166,7 @@ public class Photo extends DataObject {
 
 		maxPhotoSize = PhotoSize.getFromWidthHeight(width, height);
 
-		Coordinate coord = new Coordinate(rset.getDouble("coord_x"), rset.getDouble("coord_y"), rset.getDouble("coord_z"));
+		CartesianCoordinate coord = new CartesianCoordinate(rset.getDouble("coord_x"), rset.getDouble("coord_y"), rset.getDouble("coord_z"));
 		location = new Location(coord);
 	}
 	
@@ -190,7 +190,7 @@ public class Photo extends DataObject {
 		rset.updateLong("creation_time", creationTime);
 		if(this.location != null)
 		{
-			Coordinate coord = this.location.getCoordinate();
+			CartesianCoordinate coord = this.location.getCoordinate().asCartesianCoordinate();
 			rset.updateDouble("coord_x", coord.getX());
 			rset.updateDouble("coord_y", coord.getY());
 			rset.updateDouble("coord_z", coord.getZ());
