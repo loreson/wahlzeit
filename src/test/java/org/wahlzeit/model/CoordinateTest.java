@@ -44,6 +44,10 @@ public class CoordinateTest
         Coordinate coord4 = new CartesianCoordinate(2.0, 2.0, 3.0);
         Coordinate coord5 = new CartesianCoordinate( 1.0, 2.0, 3.0);
         Coordinate coord6 = new CartesianCoordinate(1.05, 2.0, 3.0);
+
+        Coordinate coord7 = new SphericCoordinate(0, 0, 10);
+        Coordinate coord8 = new SphericCoordinate(Math.PI, 0, 10);
+        Coordinate coord9 = new CartesianCoordinate(0, 0, 10);
         assertEquals(coord1, coord1);
         assertEquals(coord1, coord5);
         assertNotEquals(coord1, coord2);
@@ -51,6 +55,10 @@ public class CoordinateTest
         assertNotEquals(coord1, coord4);
         assertNotEquals(coord1, new Object());
         assertEquals(coord1, coord6);
+
+        assertEquals(coord7, coord8);
+        assertEquals(coord8, coord9);
+        assertEquals(coord7, coord9);
     }
 
     @Test
@@ -58,9 +66,9 @@ public class CoordinateTest
     {
         Coordinate coord1 = new CartesianCoordinate( 1.0, 2.0, 3.0);
         Coordinate coord2 = new CartesianCoordinate( 1.0, 2.0, 3.0);
-        Coordinate coord3 = new CartesianCoordinate( 1.01, 2.0, 3.0);
-        Coordinate coord4 = new CartesianCoordinate( 1.0, 2.01, 3.0);
-        Coordinate coord5 = new CartesianCoordinate( 1.0, 2.0, 3.01);
+        Coordinate coord3 = new CartesianCoordinate( 1.2, 2.0, 3.0);
+        Coordinate coord4 = new CartesianCoordinate( 1.0, 2.2, 3.0);
+        Coordinate coord5 = new CartesianCoordinate( 1.0, 2.0, 3.2);
         assertEquals(coord1.hashCode(), coord2.hashCode());
         assertNotEquals(coord1.hashCode(), coord3.hashCode());
         assertNotEquals(coord1.hashCode(), coord4.hashCode());
@@ -85,5 +93,20 @@ public class CoordinateTest
         assertEquals(10, cart.getX(), 1e-14);
         assertEquals(0, cart.getY(), 1e-14);
         assertEquals(0, cart.getZ(), 1e-14);
+    }
+
+    @Test
+    public void centralAngleTest()
+    {
+        SphericCoordinate coord0 = new SphericCoordinate(0,0,10);
+        SphericCoordinate coord1 = new SphericCoordinate(Math.PI, 0, 10);
+        SphericCoordinate coord2 = new SphericCoordinate(Math.PI, 0, 5);
+        SphericCoordinate coord3 = new SphericCoordinate(0, Math.PI/2, 10);
+        CartesianCoordinate coord4 = new CartesianCoordinate(0, 10, 0);
+        assertEquals(Math.PI, coord0.getCentralAngle(coord1), 0.01);
+        assertEquals(0, coord1.getCentralAngle(coord2), 0.01);
+        assertEquals(0, coord3.getCentralAngle(coord4), 0.01);
+        assertEquals(0, coord4.getCentralAngle(coord3), 0.01);
+
     }
 }

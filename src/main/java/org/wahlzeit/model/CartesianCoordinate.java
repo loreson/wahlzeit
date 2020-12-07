@@ -1,7 +1,6 @@
 package org.wahlzeit.model;
 import java.lang.Math;
-class CartesianCoordinate implements Coordinate
-{
+class CartesianCoordinate extends AbstractCoordinate{
 
     public CartesianCoordinate()
     {
@@ -169,22 +168,6 @@ class CartesianCoordinate implements Coordinate
         double dz = Math.abs(z - o.z);
 
         return dx + dy + dz < 0.1;
-    }
-    public boolean equals(Object other)
-    {
-        if (this == other)
-        {
-            return true;
-        }
-        if (other == null)
-        {
-            return false;
-        }
-        if( other instanceof Coordinate)
-        {
-            return this.isEqual((Coordinate)other);
-        }
-        return false;
     }
     @Override
     public int hashCode()
