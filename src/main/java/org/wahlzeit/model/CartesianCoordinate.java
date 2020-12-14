@@ -7,18 +7,21 @@ class CartesianCoordinate extends AbstractCoordinate{
         x = 0;
         y = 0;
         z = 0;
+        assertClassInvariants();
     }
     public CartesianCoordinate(double xyz)
     {
         x = xyz;
         y = xyz;
         z = xyz;
+        assertClassInvariants();
     }
     public CartesianCoordinate(double x, double y, double z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
+        assertClassInvariants();
     }
 
     public CartesianCoordinate(CartesianCoordinate other)
@@ -26,6 +29,7 @@ class CartesianCoordinate extends AbstractCoordinate{
         this.x = other.x;
         this.y = other.y;
         this.z = other.z;
+        assertClassInvariants();
     }
 
     private double x;
@@ -40,10 +44,12 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public double[] asArray()
     {
+        assertClassInvariants();
         double[] values = new double[3];
         values[0] = x;
         values[1] = y;
         values[2] = z;
+        assertClassInvariants();
         return values;
     }
 
@@ -54,9 +60,12 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public void setCartesianCoordinate(CartesianCoordinate other)
     {
+        assertClassInvariants();
+        assertArgumentNotNull(other);
         this.setX(other.getX());
         this.setY(other.getY());
         this.setZ(other.getZ());
+        assertClassInvariants();
     }
 
     /**
@@ -78,7 +87,10 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public void setX(double x)
     {
+        assertClassInvariants();
+        assertArgumentFinite(x);
         this.x = x;
+        assertClassInvariants();
     }
 
     /**
@@ -88,6 +100,7 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public double getX()
     {
+        assertClassInvariants();
         return x;
     }
 
@@ -98,7 +111,10 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public void setY(double y)
     {
+        assertClassInvariants();
+        assertArgumentFinite(y);
         this.y = y;
+        assertClassInvariants();
     }
 
     /**
@@ -108,6 +124,7 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public double getY()
     {
+        assertClassInvariants();
         return y;
     }
 
@@ -118,7 +135,10 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public void setZ(double z)
     {
+        assertClassInvariants();
+        assertArgumentFinite(z);
         this.z = z;
+        assertClassInvariants();
     }
 
     /**
@@ -128,20 +148,25 @@ class CartesianCoordinate extends AbstractCoordinate{
      */
     public double getZ()
     {
+        assertClassInvariants();
         return z;
     }
 
     public CartesianCoordinate asCartesianCoordinate()
     {
+        assertClassInvariants();
         return this;
     }
 
     public SphericCoordinate asSphericCoordinate()
     {
+        assertClassInvariants();
         double radius = Math.sqrt(x*x + y*y + z*z);
         double theta = Math.acos(z/radius);
         double phi = Math.atan2(x, y);
-        return new SphericCoordinate(phi, theta, radius);
+        SphericCoordinate coord = new SphericCoordinate(phi, theta, radius);
+        assert coord != null :"Constructor of SphericCoordinate failed";
+        return coord;
     }
     public double getCartesianDistance(Coordinate other)
     {
@@ -149,33 +174,57 @@ class CartesianCoordinate extends AbstractCoordinate{
     }
     public double getDistance(CartesianCoordinate other)
     {
+        assertClassInvariants();
+        assertArgumentNotNull(other);
         double dx = x - other.x;
         double dy = y - other.y;
         double dz = z - other.z;
         double square_dist = dx*dx + dy+dy +dz*dz;
-        return Math.sqrt(square_dist);
+        double dist = Math.sqrt(square_dist);
+        assert dist >= 0:"Distance must be non-negative";
+        assertClassInvariants();
+        return dist;
     }
 
     public double getCentralAngle(Coordinate other)
     {
-        return asSphericCoordinate().getCentralAngle(other);
+        assertArgumentNotNull(other);
+        assertClassInvariants();
+        double a = asSphericCoordinate().getCentralAngle(other);
+        assert Double.isFinite(a): "Central angle must be finite";
+        assertClassInvariants();
+        return a;
     }
     public boolean isEqual(Coordinate other)
     {
+        assertClassInvariants();
+        assertArgumentNotNull(other);
         CartesianCoordinate o = other.asCartesianCoordinate();
         double dx = Math.abs(x - o.x);
         double dy = Math.abs(y - o.y);
         double dz = Math.abs(z - o.z);
-
-        return dx + dy + dz < 0.1;
+        boolean e =  dx + dy + dz < 0.1;
+        assertClassInvariants();
+        return e;
     }
     @Override
     public int hashCode()
     {
-
+        assertClassInvariants();
         int hashX = Double.valueOf(this.x).hashCode();
         int hashY = Double.valueOf(this.y).hashCode();
         int hashZ = Double.valueOf(this.z).hashCode();
         return hashX ^ hashY ^ hashZ;
+    }
+    @Override
+    protected void assertClassInvariants()
+    {
+       
+        if( !Double.isFinite(x) || !Double.isFinite(y) || !Double.isFinite(z))
+        {
+            throw new IllegalStateException("Nonfinite Coordinate");
+        }
+        
+        return;
     }
 }
