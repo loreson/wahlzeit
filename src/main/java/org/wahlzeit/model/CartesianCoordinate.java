@@ -1,22 +1,9 @@
 package org.wahlzeit.model;
 import java.lang.Math;
 class CartesianCoordinate extends AbstractCoordinate{
-
-    public CartesianCoordinate()
-    {
-        x = 0;
-        y = 0;
-        z = 0;
-        assertClassInvariants();
-    }
-    public CartesianCoordinate(double xyz)
-    {
-        x = xyz;
-        y = xyz;
-        z = xyz;
-        assertClassInvariants();
-    }
-    public CartesianCoordinate(double x, double y, double z)
+    
+    
+    protected CartesianCoordinate(double x, double y, double z)
     {
         this.x = x;
         this.y = y;
@@ -24,17 +11,9 @@ class CartesianCoordinate extends AbstractCoordinate{
         assertClassInvariants();
     }
 
-    public CartesianCoordinate(CartesianCoordinate other)
-    {
-        this.x = other.x;
-        this.y = other.y;
-        this.z = other.z;
-        assertClassInvariants();
-    }
-
-    private double x;
-    private double y;
-    private double z;
+    private final double x;
+    private final double y;
+    private final double z;
 
     /**
      * Returns the coordinates as an array of the form
@@ -53,44 +32,17 @@ class CartesianCoordinate extends AbstractCoordinate{
         return values;
     }
 
-    /**
-     * Sets the coordinates equal to the ones of other.
-     * @methodtype set method
-     * @methodproperties composed
-     */
-    public void setCartesianCoordinate(CartesianCoordinate other)
-    {
-        assertClassInvariants();
-        assertArgumentNotNull(other);
-        this.setX(other.getX());
-        this.setY(other.getY());
-        this.setZ(other.getZ());
-        assertClassInvariants();
-    }
-
-    /**
-     * Sets the coordinates to values of an array.
-     * @methodtype set method
-     * @methodproperties composed
-     */
-    public void setCoordinate(double[] values)
-    {
-        this.setX(values[0]);
-        this.setY(values[1]);
-        this.setZ(values[2]);
-    }
-
+  
     /**
      * Sets the X coordinate.
      * @methodtype set method
      * @methodproperties primitive
      */
-    public void setX(double x)
+    public CartesianCoordinate setX(double x)
     {
         assertClassInvariants();
         assertArgumentFinite(x);
-        this.x = x;
-        assertClassInvariants();
+        return AbstractCoordinate.getCoordinateFromCart(x, this.y, this.z).asCartesianCoordinate();
     }
 
     /**
@@ -109,12 +61,12 @@ class CartesianCoordinate extends AbstractCoordinate{
      * @methodtype set method
      * @methodproperties primitive
      */
-    public void setY(double y)
+    public CartesianCoordinate setY(double y)
     {
         assertClassInvariants();
         assertArgumentFinite(y);
-        this.y = y;
-        assertClassInvariants();
+
+        return AbstractCoordinate.getCoordinateFromCart(this.x, y, this.z).asCartesianCoordinate();
     }
 
     /**
@@ -133,12 +85,12 @@ class CartesianCoordinate extends AbstractCoordinate{
      * @methodtype set method
      * @methodproperties primitive
      */
-    public void setZ(double z)
+    public CartesianCoordinate setZ(double z)
     {
         assertClassInvariants();
         assertArgumentFinite(z);
-        this.z = z;
-        assertClassInvariants();
+        return AbstractCoordinate.getCoordinateFromCart(this.x, this.y, z).asCartesianCoordinate();
+
     }
 
     /**
@@ -152,13 +104,13 @@ class CartesianCoordinate extends AbstractCoordinate{
         return z;
     }
 
-    public CartesianCoordinate asCartesianCoordinate()
+    protected CartesianCoordinate toCartesian()
     {
         assertClassInvariants();
         return this;
     }
 
-    public SphericCoordinate asSphericCoordinate()
+    protected SphericCoordinate toSpheric()
     {
         assertClassInvariants();
         double radius = Math.sqrt(x*x + y*y + z*z);
