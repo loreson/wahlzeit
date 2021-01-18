@@ -1,17 +1,32 @@
 package org.wahlzeit.model;
 import java.lang.Math;
 import java.lang.IllegalStateException;
+import java.util.ArrayList;
 class SphericCoordinate extends AbstractCoordinate
 {
     private final double phi;
     private final double theta;
     private final double radius;
 
+    private static ArrayList<SphericCoordinate> allCoordinates = new ArrayList<SphericCoordinate>();
 
-    protected SphericCoordinate(double phi, double theta, double radius)
+    public static SphericCoordinate getSpheric(double phi, double theta, double radius)
     {
-        this.phi = phi;
+        SphericCoordinate coord = new SphericCoordinate(phi, theta, radius);
+        for(SphericCoordinate existing: allCoordinates)
+        {
+            if(coord.equals(existing)){
+                return(existing);
+            }
+        }
+        allCoordinates.add(coord);
+        return coord;
+    }
+
+    protected SphericCoordinate(double theta, double phi, double radius)
+    {
         this.theta = theta;
+        this.phi = phi;
         this.radius = radius;
         assertClassInvariants();
     }
@@ -25,7 +40,7 @@ class SphericCoordinate extends AbstractCoordinate
     {
         assertClassInvariants();
         assertArgumentFinite(phi);
-        return new SphericCoordinate(phi, this.theta, this.radius);
+        return getSpheric(this.theta, phi, this.radius);
         
     }
     public double getTheta()
@@ -38,7 +53,7 @@ class SphericCoordinate extends AbstractCoordinate
     {
         assertClassInvariants();
         assertArgumentFinite(theta);
-        return new SphericCoordinate(this.phi, theta, this.radius);
+        return getSpheric(theta, this.phi, this.radius);
     }
     public double getRadius()
     {
@@ -50,22 +65,24 @@ class SphericCoordinate extends AbstractCoordinate
     {
         assertClassInvariants();
         assertArgumentFinite(radius);
-        return new SphericCoordinate(this.phi, this.theta, radius);
+        return getSpheric( this.theta, this.phi, radius);
     }
 
+    
+
     @Override
-    protected SphericCoordinate toSpheric()
+    public SphericCoordinate asSphericCoordinate()
     {
         return this;
     }
     @Override
-    protected CartesianCoordinate toCartesian()
+    public CartesianCoordinate asCartesianCoordinate()
     {
         assertClassInvariants();
         double x = radius * Math.sin(theta) * Math.cos(phi);
         double y = radius * Math.sin(theta) * Math.sin(phi);
         double z = radius * Math.cos(theta);
-        CartesianCoordinate coord = new CartesianCoordinate(x, y, z);
+        CartesianCoordinate coord = CartesianCoordinate.getCartesian(x, y, z);
         assert coord != null :"Constructor of CartesianCoordinate failed";
         return coord;
     }

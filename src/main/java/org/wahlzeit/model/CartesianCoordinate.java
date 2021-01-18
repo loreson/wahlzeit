@@ -1,8 +1,23 @@
 package org.wahlzeit.model;
 import java.lang.Math;
+import java.util.ArrayList;
+
 class CartesianCoordinate extends AbstractCoordinate{
-    
-    
+    private static ArrayList<CartesianCoordinate> allCoordinates = new ArrayList<CartesianCoordinate>();
+
+    public static CartesianCoordinate getCartesian(double x, double y, double z)
+    {
+        CartesianCoordinate coord = new CartesianCoordinate(x, y, z);
+        for(CartesianCoordinate existing: allCoordinates)
+        {
+            if(coord.equals(existing)){
+                coord = null;
+                return(existing);
+            }
+        }
+        allCoordinates.add(coord);
+        return coord;
+    }
     protected CartesianCoordinate(double x, double y, double z)
     {
         this.x = x;
@@ -42,7 +57,7 @@ class CartesianCoordinate extends AbstractCoordinate{
     {
         assertClassInvariants();
         assertArgumentFinite(x);
-        return AbstractCoordinate.getCoordinateFromCart(x, this.y, this.z).asCartesianCoordinate();
+        return getCartesian(x, this.y, this.z);
     }
 
     /**
@@ -66,7 +81,7 @@ class CartesianCoordinate extends AbstractCoordinate{
         assertClassInvariants();
         assertArgumentFinite(y);
 
-        return AbstractCoordinate.getCoordinateFromCart(this.x, y, this.z).asCartesianCoordinate();
+        return getCartesian(this.x, y, this.z);
     }
 
     /**
@@ -89,7 +104,7 @@ class CartesianCoordinate extends AbstractCoordinate{
     {
         assertClassInvariants();
         assertArgumentFinite(z);
-        return AbstractCoordinate.getCoordinateFromCart(this.x, this.y, z).asCartesianCoordinate();
+        return getCartesian(this.x, this.y, z);
 
     }
 
@@ -104,20 +119,20 @@ class CartesianCoordinate extends AbstractCoordinate{
         return z;
     }
 
-    protected CartesianCoordinate toCartesian()
+    public CartesianCoordinate asCartesianCoordinate()
     {
         assertClassInvariants();
         return this;
     }
 
-    protected SphericCoordinate toSpheric()
+    public SphericCoordinate asSphericCoordinate()
     {
         assertClassInvariants();
         double radius = Math.sqrt(x*x + y*y + z*z);
         double theta = Math.acos(z/radius);
         double phi = Math.atan2(x, y);
-        SphericCoordinate coord = new SphericCoordinate(phi, theta, radius);
-        assert coord != null :"Constructor of SphericCoordinate failed";
+        SphericCoordinate coord = SphericCoordinate.getSpheric(phi, theta, radius);
+        assert coord != null :"getSpheric failed";
         return coord;
     }
     public double getCartesianDistance(Coordinate other)

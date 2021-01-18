@@ -4,7 +4,7 @@ class Location
 {
     public Location()
     {
-        coordinate = AbstractCoordinate.getCoordinateFromCart(0, 0, 0);
+        coordinate = CartesianCoordinate.getCartesian(0, 0, 0);
     }
     public Location(Coordinate coordinate)
     {

@@ -4,58 +4,12 @@ import java.util.ArrayList;
 abstract class AbstractCoordinate implements Coordinate
 {
 
-    private static ArrayList<Coordinate> allCoordinates = new ArrayList<Coordinate>();
-    public static Coordinate getCoordinateFromCart(double x, double y, double z)
-    {
-        CartesianCoordinate coord = new CartesianCoordinate(x, y, z);
-        for(Coordinate existing: allCoordinates)
-        {
-            if(coord.equals(existing)){
-                return(existing);
-            }
-        }
-        allCoordinates.add(coord);
-        return coord;
-    }
-    public static Coordinate getCoordinateFromSpheric(double phi, double theta, double radius)
-    {
-        SphericCoordinate coord = new SphericCoordinate(phi, theta, radius);
-        for(Coordinate existing: allCoordinates)
-        {
-            if(coord.equals(existing)){
-                return(existing);
-            }
-        }
-        allCoordinates.add(coord);
-        return coord;
-    }
+  
 
-    public CartesianCoordinate asCartesianCoordinate()
-    {
-        for(Coordinate existing: allCoordinates)
-        {
-            if(this.equals(existing) && existing instanceof CartesianCoordinate){
-                return( (CartesianCoordinate) existing);
-            }
-        }
-        CartesianCoordinate coord = this.toCartesian();
-        allCoordinates.add(coord);
-        return coord;
-    }
-    public SphericCoordinate asSphericCoordinate()
-    {
-        for(Coordinate existing: allCoordinates)
-        {
-            if(this.equals(existing) && existing instanceof SphericCoordinate){
-                return( (SphericCoordinate) existing);
-            }
-        }
-        SphericCoordinate coord = this.toSpheric();
-        allCoordinates.add(coord);
-        return coord;
-    }
-    abstract protected SphericCoordinate toSpheric();
-    abstract protected CartesianCoordinate toCartesian();
+    abstract public  CartesianCoordinate asCartesianCoordinate();
+    abstract public SphericCoordinate asSphericCoordinate();
+        
+
     @Override
     public double getCartesianDistance(Coordinate other) {
         assertArgumentNotNull(other);
