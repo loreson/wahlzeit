@@ -21,10 +21,11 @@
 package org.wahlzeit.services.mailing;
 
 import org.wahlzeit.main.ServiceMain;
-
+import org.wahlzeit.utils.PatternInstance;
 /**
  * 
  */
+@PatternInstance(name = "Singleton", type = "Creational pattern",  participants ={"EmailServiceManager"} )
 public class EmailServiceManager {
 	
 	/**

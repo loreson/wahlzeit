@@ -2,6 +2,7 @@ package org.wahlzeit.model;
 import java.lang.Math;
 import java.lang.IllegalStateException;
 import java.util.ArrayList;
+import org.wahlzeit.utils.PatternInstance;
 class SphericCoordinate extends AbstractCoordinate
 {
     private final double phi;
@@ -12,6 +13,7 @@ class SphericCoordinate extends AbstractCoordinate
 
     public static SphericCoordinate getSpheric(double phi, double theta, double radius)
     {
+        @PatternInstance(name = "Object pool", type = "Creational pattern", participants = {"CartesianCoordinate"})
         SphericCoordinate coord = new SphericCoordinate(phi, theta, radius);
         for(SphericCoordinate existing: allCoordinates)
         {

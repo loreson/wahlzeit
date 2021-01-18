@@ -1,8 +1,10 @@
 package org.wahlzeit.model;
 import java.lang.Math;
 import java.util.ArrayList;
+import org.wahlzeit.utils.PatternInstance;
 
 class CartesianCoordinate extends AbstractCoordinate{
+    @PatternInstance(name = "Object pool", type = "Creational pattern", participants = {"CartesianCoordinate"})
     private static ArrayList<CartesianCoordinate> allCoordinates = new ArrayList<CartesianCoordinate>();
 
     public static CartesianCoordinate getCartesian(double x, double y, double z)

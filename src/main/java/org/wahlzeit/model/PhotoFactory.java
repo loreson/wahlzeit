@@ -23,10 +23,11 @@ package org.wahlzeit.model;
 import java.sql.*;
 
 import org.wahlzeit.services.*;
-
+import org.wahlzeit.utils.PatternInstance;
 /**
  * An Abstract Factory for creating photos and related objects.
  */
+@PatternInstance(name = "Singleton", type = "Creational Pattern", participants ="PhotoFactory")
 public class PhotoFactory {
 	
 	/**
@@ -70,10 +71,11 @@ public class PhotoFactory {
 	protected PhotoFactory() {
 		// do nothing
 	}
-
+	
 	/**
 	 * @methodtype factory
 	 */
+	@PatternInstance(name = "Factory Method", type ="creational Pattern", participants = {"PhotoFactory", "CardPhotoFactory", "Photo", "CardPhoto"})
 	public Photo createPhoto() {
 		return new Photo();
 	}
