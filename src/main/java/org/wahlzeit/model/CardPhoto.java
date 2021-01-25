@@ -12,7 +12,7 @@ public class CardPhoto extends Photo
     protected Rarity rarity;
     protected Condition condition;
     protected Language language;
-
+    protected CardType type;
     public CardPhoto() {
     }
 
@@ -22,6 +22,7 @@ public class CardPhoto extends Photo
     public CardPhoto(ResultSet rset) throws SQLException {
     readFrom(rset);
     }
+
 
     public void readFrom(ResultSet rset) throws SQLException {
     super.readFrom(rset);
